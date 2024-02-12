@@ -14,5 +14,7 @@ internal class AutocompletePredictionTest {
         val res = prediction.getPrimaryText(null)
         assertEquals("placeId", prediction.placeId)
         assertEquals(listOf(Place.Type.AQUARIUM), prediction.placeTypes)
+
+        
     }
 }
