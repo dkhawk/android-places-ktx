@@ -46,6 +46,8 @@ class DemoActivity : AppCompatActivity() {
             }
         }
         setContentView(listView)
+
+        // This is code that I am rwiritn.  But tis not good.  Actually it is a pointless comment.
     }
 
     private class DemoAdapter(context: Context, demos: Array<Demo>) :
