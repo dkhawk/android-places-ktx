@@ -26,8 +26,6 @@ constructor(
   private val _places = mutableStateListOf<PlaceData>()
   val places: List<PlaceData> = _places
 
-//  private val _currentPlaces
-
   private val placeSequence = generateSequence(0) { it + 1 }.iterator()
 
   fun onEvent(event: PlacesViewModelEvent) {
@@ -37,7 +35,12 @@ constructor(
       is PlacesViewModelEvent.OnPlaceClick -> addError("Not implemented, yet!")
       is PlacesViewModelEvent.OnPlaceCloseClick -> placeClose(event.placeId)
       PlacesViewModelEvent.OnUpdateCurrentPlace -> updateCurrentPlace()
+      PlacesViewModelEvent.OnTextSearchClick -> showTextSearchDialog()
     }
+  }
+
+  private fun showTextSearchDialog() {
+    TODO("Not yet implemented")
   }
 
   @SuppressLint("MissingPermission")
