@@ -37,6 +37,7 @@ class NewPlacesApiDemoActivity : ComponentActivity() {
             onFabClicked = { viewModel.onEvent(PlacesViewModelEvent.OnAddNewPlaceClick) },
             onPlaceClick = { placeId -> viewModel.onEvent(PlacesViewModelEvent.OnPlaceClick(placeId)) },
             onPlaceCloseClick = { placeId -> viewModel.onEvent(PlacesViewModelEvent.OnPlaceCloseClick(placeId)) },
+            onTextSearchClick = { viewModel.onEvent(PlacesViewModelEvent.OnTextSearchClick) }
           )
         } else {
           if (permissionState.status.shouldShowRationale) {
