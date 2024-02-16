@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">New Places Client</string>
+  <string name="text_search_label">Text Search</string>
+  <string name="auto_complete_label">Auto Complete</string>
+</resources>
