@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -25,6 +26,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,8 +45,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.net.PlacesClient
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 data class NavigationItem(
@@ -54,6 +56,7 @@ data class NavigationItem(
 )
 
 class MainActivity : ComponentActivity() {
+  @OptIn(ExperimentalMaterial3Api::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -67,6 +70,9 @@ class MainActivity : ComponentActivity() {
       val scope = rememberCoroutineScope()
 
       AndroidplacesktxTheme {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
         val screenItems = listOf(
           NavigationItem(
             route = "text_search",
@@ -81,19 +87,36 @@ class MainActivity : ComponentActivity() {
             unselectedIcon = Icons.Outlined.Add,
           ),
         )
+
+        var selectedScreen by remember {
+          mutableStateOf(screenItems.first())
+        }
+
+        LaunchedEffect(currentDestination) {
+          selectedScreen = screenItems.firstOrNull { item ->
+            currentDestination?.hierarchy?.any { it.route == item.route } == true
+          } ?: selectedScreen
+        }
+
         Surface(
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background
         ) {
           Scaffold(
+            topBar = {
+              TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                  containerColor = MaterialTheme.colorScheme.primaryContainer,
+                  titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = { Text(selectedScreen.title) }
+              )
+            },
             snackbarHost = {
               SnackbarHost(hostState = snackbarHostState)
             },
             bottomBar = {
               NavigationBar {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-
                 screenItems.forEach { item ->
                   val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
@@ -125,22 +148,34 @@ class MainActivity : ComponentActivity() {
           ) { innerPadding ->
             NavHost(
               navController = navController,
-              startDestination = Screen.TextSearch.route,
+              startDestination = screenItems.first().route,
               modifier = Modifier.padding(innerPadding)
             ) {
-              composable(Screen.TextSearch.route) {
+              composable(screenItems[0].route) {
                 TextSearchScreen(placesClient) { message: String ->
-                  if (message.isNotEmpty()) {
-                    scope.launch {
-                      snackbarHostState.showSnackbar(message = message)
-                    }
-                  }
+                  showErrorSnackBar(message, scope, snackbarHostState)
                 }
               }
-              composable(Screen.Autocomplete.route) { AutocompleteScreen(placesClient) }
+              composable(Screen.Autocomplete.route) {
+                AutocompleteScreen(placesClient) { message: String ->
+                  showErrorSnackBar(message, scope, snackbarHostState)
+                }
+              }
             }
           }
         }
+      }
+    }
+  }
+
+  private fun showErrorSnackBar(
+      message: String,
+      scope: CoroutineScope,
+      snackbarHostState: SnackbarHostState
+  ) {
+    if (message.isNotEmpty()) {
+      scope.launch {
+        snackbarHostState.showSnackbar(message = message)
       }
     }
   }
@@ -163,10 +198,5 @@ fun BigSpinner() {
       trackColor = MaterialTheme.colorScheme.surfaceVariant,
     )
   }
-}
-
-@Composable
-fun  AutocompleteScreen(placesClient: PlacesClient) {
-  Text("Autocomplete")
 }
 
