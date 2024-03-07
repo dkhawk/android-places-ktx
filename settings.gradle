@@ -1,5 +1,4 @@
 include ':app'
 include ':places-ktx'
 rootProject.name = "android-places-ktx"
-include ':newplacesapidemoapp'
 include ':new-places-client'
