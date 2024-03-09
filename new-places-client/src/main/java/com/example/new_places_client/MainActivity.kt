@@ -3,7 +3,6 @@ package com.example.new_places_client
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -189,11 +188,6 @@ class MainActivity : ComponentActivity() {
       }
     }
   }
-}
-
-sealed class Screen(val route: String, @StringRes val resourceId: Int) {
-  data object Autocomplete : Screen("auto_complete", R.string.auto_complete_label)
-  data object TextSearch : Screen("text_search", R.string.text_search_label)
 }
 
 @Composable
