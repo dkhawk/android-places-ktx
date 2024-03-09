@@ -63,6 +63,16 @@ class MainActivity : ComponentActivity() {
     val placesClient = Places.createClient(this)
 
     setContent {
+//      Column(
+//        modifier = Modifier.fillMaxSize()
+//      ) {
+////      EditableFilteringDropdownMenu()
+//        ExposedDropdownMenuSample()
+//        EditableExposedDropdownMenuSample()
+//      }
+//
+//      return@setContent
+
       val navController = rememberNavController()
 
       val snackbarHostState = remember { SnackbarHostState() }
@@ -156,7 +166,7 @@ class MainActivity : ComponentActivity() {
                   showErrorSnackBar(message, scope, snackbarHostState)
                 }
               }
-              composable(Screen.Autocomplete.route) {
+              composable(screenItems[1].route) {
                 AutocompleteScreen(placesClient) { message: String ->
                   showErrorSnackBar(message, scope, snackbarHostState)
                 }
