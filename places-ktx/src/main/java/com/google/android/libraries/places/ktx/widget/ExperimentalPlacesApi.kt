@@ -1,8 +1,8 @@
-package com.example.new_places_client.widget
+package com.google.android.libraries.places.ktx.widget
 
 @RequiresOptIn(
   "This material API is experimental and is likely to change or to be removed in" +
     " the future."
 )
 @Retention(AnnotationRetention.BINARY)
-annotation class ExperimentalPlacesApi
+public annotation class ExperimentalPlacesApi
