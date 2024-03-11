@@ -18,11 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.new_places_client.widget.ExperimentalPlacesApi
-import com.example.new_places_client.widget.PlacesAutocomplete
+import com.google.android.libraries.places.ktx.widget.ExperimentalPlacesApi
+import com.google.android.libraries.places.ktx.widget.PlacesAutocomplete
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -67,6 +68,7 @@ fun AutocompleteScreen(placesClient: PlacesClient, onShowMessage: (String) -> Un
     Column(Modifier.fillMaxSize()) {
         PlacesAutocomplete(
             placesClient,
+            searchLabelContent = { Text(stringResource(id = R.string.auto_complete_hint)) },
             actions = {
                 locationBias = RectangularBounds.newInstance(
                     LatLng(39.95106, -105.31828), // SW lat, lng
