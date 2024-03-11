@@ -3,6 +3,7 @@ package com.example.new_places_client
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -49,9 +51,24 @@ import kotlinx.coroutines.launch
 
 data class NavigationItem(
   val route: String,
-  val title: String,
+  @StringRes val title: Int,
   val selectedIcon: ImageVector,
   val unselectedIcon: ImageVector,
+)
+
+val navigationItems = listOf(
+  NavigationItem(
+    route = "text_search",
+    title = R.string.text_search_label,
+    selectedIcon = Icons.Filled.Search,
+    unselectedIcon = Icons.Outlined.Search,
+  ),
+  NavigationItem(
+    route = "auto_complete",
+    title = R.string.auto_complete_label,
+    selectedIcon = Icons.Filled.Add,
+    unselectedIcon = Icons.Outlined.Add,
+  ),
 )
 
 class MainActivity : ComponentActivity() {
@@ -62,16 +79,6 @@ class MainActivity : ComponentActivity() {
     val placesClient = Places.createClient(this)
 
     setContent {
-//      Column(
-//        modifier = Modifier.fillMaxSize()
-//      ) {
-////      EditableFilteringDropdownMenu()
-//        ExposedDropdownMenuSample()
-//        EditableExposedDropdownMenuSample()
-//      }
-//
-//      return@setContent
-
       val navController = rememberNavController()
 
       val snackbarHostState = remember { SnackbarHostState() }
@@ -82,27 +89,12 @@ class MainActivity : ComponentActivity() {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        val screenItems = listOf(
-          NavigationItem(
-            route = "text_search",
-            title = "Text Search",
-            selectedIcon = Icons.Filled.Search,
-            unselectedIcon = Icons.Outlined.Search,
-          ),
-          NavigationItem(
-            route = "auto_complete",
-            title = "Auto complete",
-            selectedIcon = Icons.Filled.Add,
-            unselectedIcon = Icons.Outlined.Add,
-          ),
-        )
-
         var selectedScreen by remember {
-          mutableStateOf(screenItems.first())
+          mutableStateOf(navigationItems.first())
         }
 
         LaunchedEffect(currentDestination) {
-          selectedScreen = screenItems.firstOrNull { item ->
+          selectedScreen = navigationItems.firstOrNull { item ->
             currentDestination?.hierarchy?.any { it.route == item.route } == true
           } ?: selectedScreen
         }
@@ -118,7 +110,7 @@ class MainActivity : ComponentActivity() {
                   containerColor = MaterialTheme.colorScheme.primaryContainer,
                   titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
-                title = { Text(selectedScreen.title) }
+                title = { Text(stringResource(id = selectedScreen.title)) }
               )
             },
             snackbarHost = {
@@ -126,7 +118,7 @@ class MainActivity : ComponentActivity() {
             },
             bottomBar = {
               NavigationBar {
-                screenItems.forEach { item ->
+                navigationItems.forEach { item ->
                   val selected = currentDestination?.hierarchy?.any { it.route == item.route } == true
 
                   NavigationBarItem(
@@ -141,13 +133,13 @@ class MainActivity : ComponentActivity() {
                       }
                     },
                     label = {
-                      Text(text = item.title)
+                      Text(text = stringResource(id = item.title))
                     },
                     alwaysShowLabel = true,
                     icon = {
                       Icon(
                         imageVector = if (selected) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title
+                        contentDescription = null
                       )
                     }
                   )
@@ -157,15 +149,15 @@ class MainActivity : ComponentActivity() {
           ) { innerPadding ->
             NavHost(
               navController = navController,
-              startDestination = screenItems.first().route,
+              startDestination = navigationItems.first().route,
               modifier = Modifier.padding(innerPadding)
             ) {
-              composable(screenItems[0].route) {
+              composable(navigationItems[0].route) {
                 TextSearchScreen(placesClient) { message: String ->
                   showErrorSnackBar(message, scope, snackbarHostState)
                 }
               }
-              composable(screenItems[1].route) {
+              composable(navigationItems[1].route) {
                 AutocompleteScreen(placesClient) { message: String ->
                   showErrorSnackBar(message, scope, snackbarHostState)
                 }
