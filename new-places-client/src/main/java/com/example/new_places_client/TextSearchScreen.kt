@@ -69,15 +69,15 @@ fun TextSearchScreen(placesClient: PlacesClient, onShowMessage: (String) -> Unit
         mutableStateOf("")
     }
 
-    var searchResults by rememberSaveable {
+    var searchResults by remember {
         mutableStateOf<List<PlaceDetails>>(emptyList())
     }
 
-    var showSpinner by rememberSaveable {
+    var showSpinner by remember {
         mutableStateOf(false)
     }
 
-    var selectedPlace by rememberSaveable {
+    var selectedPlace by remember {
         mutableStateOf<PlaceDetails?>(null)
     }
 

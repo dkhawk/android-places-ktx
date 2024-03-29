@@ -85,7 +85,9 @@ class MainActivity : ComponentActivity() {
 
       val scope = rememberCoroutineScope()
 
-      AndroidplacesktxTheme {
+      AndroidplacesktxTheme(
+        dynamicColor = false
+      ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
