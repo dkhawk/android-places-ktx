@@ -68,7 +68,7 @@ dependencies {
   debugImplementation("androidx.compose.ui:ui-tooling")
   debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-  implementation("com.google.accompanist:accompanist-permissions:0.34.0")
+  // implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
   implementation("com.google.android.libraries.places:places:3.4.0")
   implementation("com.google.android.gms:play-services-maps:18.2.0")
