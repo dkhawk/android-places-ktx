@@ -43,6 +43,14 @@ android {
         unitTests.returnDefaultValues = true
     }
     namespace "com.google.android.libraries.places.ktx"
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.5.12"
+    }
 }
 
 dependencies {
@@ -53,6 +61,8 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
     api("com.google.android.libraries.places:places:3.4.0")
+
+    implementation("androidx.compose.material3:material3-android:1.2.1")
 
     // Tests
     testImplementation("androidx.test.ext:junit:1.1.5")
