@@ -1,14 +1,16 @@
-package com.google.android.libraries.places.ktx.widget
+package com.example.new_places_client.widget
 
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -23,12 +25,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import com.example.new_places_client.R
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -125,7 +129,8 @@ public fun PlacesAutocomplete(
       expanded = expanded,
       onDismissRequest = { setExpanded(false) },
     ) {
-      autocompleteResults.forEach { prediction ->
+
+      autocompleteResults.take(4).forEach { prediction ->
         val text = prediction.getPrimaryText(null).toString()
         DropdownMenuItem(
           modifier = Modifier.fillMaxWidth(),
@@ -139,6 +144,19 @@ public fun PlacesAutocomplete(
           contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
         )
       }
+
+      DropdownMenuItem(
+        modifier = Modifier.fillMaxWidth(),
+        text = {
+          Row {
+            Text("Powered by ")
+            Icon(painterResource(id = R.drawable.google), contentDescription = "Google")
+          }
+        },
+        onClick = { /*TODO*/ },
+        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+      )
+
     }
   }
 }

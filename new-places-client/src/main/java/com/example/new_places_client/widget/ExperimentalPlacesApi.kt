@@ -1,4 +1,4 @@
-package com.google.android.libraries.places.ktx.widget
+package com.example.new_places_client.widget
 
 @RequiresOptIn(
   "This material API is experimental and is likely to change or to be removed in" +

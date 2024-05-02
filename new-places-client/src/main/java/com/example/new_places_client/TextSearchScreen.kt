@@ -132,8 +132,8 @@ fun TextSearchScreen(placesClient: PlacesClient, onShowMessage: (String) -> Unit
 
     Column(
         modifier = Modifier
-          .fillMaxSize()
-          .padding(16.dp)
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
 
         SearchRow { newSearchText ->
@@ -153,8 +153,8 @@ fun TextSearchScreen(placesClient: PlacesClient, onShowMessage: (String) -> Unit
             if (searchResults.isNotEmpty()) {
                 Card(
                     modifier = Modifier
-                      .padding(top = 8.dp, bottom = 8.dp)
-                      .weight(1f)
+                        .padding(top = 8.dp, bottom = 8.dp)
+                        .weight(1f)
                 ) {
                     SearchResultsList(searchResults, focusedPlace) { place, doubleClick ->
                         if (doubleClick) {
@@ -179,8 +179,8 @@ fun TextSearchScreen(placesClient: PlacesClient, onShowMessage: (String) -> Unit
 
                 Card(
                     modifier = Modifier
-                      .padding(top = 8.dp, bottom = 8.dp)
-                      .weight(2f)
+                        .padding(top = 8.dp, bottom = 8.dp)
+                        .weight(2f)
                 ) {
                     if (focusedPlace != null) {
                         PlaceDetails(focusedPlace)
@@ -319,12 +319,12 @@ private fun SearchResultsList(
 
             Row(
                 modifier = modifier
-                  .fillMaxWidth()
-                  .padding(8.dp)
-                  .combinedClickable(
-                    onClick = { onPlaceSelected(place, false) },
-                    onDoubleClick = { onPlaceSelected(place, true) }
-                  ),
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .combinedClickable(
+                        onClick = { onPlaceSelected(place, false) },
+                        onDoubleClick = { onPlaceSelected(place, true) }
+                    ),
             ) {
                 Text(place.name)
             }

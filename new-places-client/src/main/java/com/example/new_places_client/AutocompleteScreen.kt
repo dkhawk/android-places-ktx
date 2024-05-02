@@ -22,11 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.google.android.libraries.places.ktx.widget.ExperimentalPlacesApi
-import com.google.android.libraries.places.ktx.widget.PlacesAutocomplete
+import com.example.new_places_client.widget.ExperimentalPlacesApi
+import com.example.new_places_client.widget.PlacesAutocomplete
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceTypes
@@ -40,6 +41,15 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 private val predictionsHighlightStyle = SpanStyle(fontWeight = FontWeight.Bold, color = Color.Blue)
+
+private val boulder = with(LatLngBounds.builder()) {
+    include(39.95106, -105.31828)
+    include(40.07399, -105.18096)
+    build()
+}
+
+private fun LatLngBounds.Builder.include(lat: Double, lng: Double): LatLngBounds.Builder =
+    include(LatLng(lat, lng))
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalPlacesApi::class)
 @Composable
@@ -70,10 +80,7 @@ fun AutocompleteScreen(placesClient: PlacesClient, onShowMessage: (String) -> Un
             placesClient,
             searchLabelContent = { Text(stringResource(id = R.string.auto_complete_hint)) },
             actions = {
-                locationBias = RectangularBounds.newInstance(
-                    LatLng(39.95106, -105.31828), // SW lat, lng
-                    LatLng(40.07399, -105.18096) // NE lat, lng
-                )
+                locationBias = RectangularBounds.newInstance(boulder)
                 typesFilter = listOf(PlaceTypes.ESTABLISHMENT)
                 countries = listOf("US")
             },
