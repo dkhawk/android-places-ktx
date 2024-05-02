@@ -5,4 +5,4 @@ package com.example.new_places_client.widget
     " the future."
 )
 @Retention(AnnotationRetention.BINARY)
-public annotation class ExperimentalPlacesApi
+annotation class ExperimentalPlacesApi

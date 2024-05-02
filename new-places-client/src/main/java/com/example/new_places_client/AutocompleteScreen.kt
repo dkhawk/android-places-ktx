@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -40,8 +40,6 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-private val predictionsHighlightStyle = SpanStyle(fontWeight = FontWeight.Bold, color = Color.Blue)
-
 private val boulder = with(LatLngBounds.builder()) {
     include(39.95106, -105.31828)
     include(40.07399, -105.18096)
@@ -54,6 +52,11 @@ private fun LatLngBounds.Builder.include(lat: Double, lng: Double): LatLngBounds
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalPlacesApi::class)
 @Composable
 fun AutocompleteScreen(placesClient: PlacesClient, onShowMessage: (String) -> Unit) {
+    val predictionsHighlightStyle = SpanStyle(
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.primary
+    )
+
     // The list of place details fields to retrieve from the server for the selected place.
     // See the full list at https://developers.google.com/maps/documentation/places/android-sdk/place-data-fields
     val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.LAT_LNG)
@@ -78,7 +81,9 @@ fun AutocompleteScreen(placesClient: PlacesClient, onShowMessage: (String) -> Un
     Column(Modifier.fillMaxSize()) {
         PlacesAutocomplete(
             placesClient,
-            searchLabelContent = { Text(stringResource(id = R.string.auto_complete_hint)) },
+            searchLabelContent = {
+                Text(stringResource(id = R.string.auto_complete_hint))
+            },
             actions = {
                 locationBias = RectangularBounds.newInstance(boulder)
                 typesFilter = listOf(PlaceTypes.ESTABLISHMENT)

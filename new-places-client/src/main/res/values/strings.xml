@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="app_name">New Places Client</string>
   <string name="text_search_label">Text Search</string>
   <string name="auto_complete_label">Auto Complete</string>
@@ -6,4 +6,6 @@
   <string name="places_text_search_hint">Places text search</string>
   <string name="auto_complete_hint">Places autocomplete search</string>
   <string name="selected_place">Selected place: %1$s</string>
+
+  <string name="powered_by_google">Powered by <xliff:g id="google" example="Google">[Google]</xliff:g></string>
 </resources>
