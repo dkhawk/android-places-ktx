@@ -7,7 +7,8 @@ class NewPlacesApplication : Application() {
   override fun onCreate() {
     super.onCreate()
 
-//    Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.PLACES_API_KEY)
+    // TODO: You can also use the New Places API
+    // Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.PLACES_API_KEY)
     Places.initialize(this, BuildConfig.PLACES_API_KEY)
   }
 }

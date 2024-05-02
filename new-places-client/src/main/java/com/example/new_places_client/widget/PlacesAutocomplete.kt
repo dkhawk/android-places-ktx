@@ -36,6 +36,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.em
 import com.example.new_places_client.R
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -53,8 +54,8 @@ private val predictionStyleSpan = StyleSpan(Typeface.BOLD)
 
 /**
  * Implements a places autocomplete composable that consists of a [TextField] and an
- * [ExposedDropdownMenu] wrapped by an [ExposedDropdownMenuBox].  This composable debounces changes
- * to the TextField to reduce excessive calls to the [PlacesClient].
+ * [ExposedDropdownMenuBox] wrapped by an [ExposedDropdownMenuBox].  This composable debounces
+ * changes to the TextField to reduce excessive calls to the [PlacesClient].
  *
  * @param placesClient - an initialized [PlacesClient] used to fetch [AutocompletePrediction]s
  * @param actions - a block applied to the [AutocompletePrediction.Builder] to create the
@@ -69,7 +70,7 @@ private val predictionStyleSpan = StyleSpan(Typeface.BOLD)
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
 @ExperimentalPlacesApi
 @Composable
-public fun PlacesAutocomplete(
+fun PlacesAutocomplete(
   placesClient: PlacesClient,
   actions: FindAutocompletePredictionsRequest.Builder.() -> Unit,
   onPlaceSelected: (AutocompletePrediction?) -> Unit,
@@ -77,7 +78,7 @@ public fun PlacesAutocomplete(
   predictionsHighlightStyle: SpanStyle = SpanStyle(fontWeight = FontWeight.Bold),
   searchLabelContent: @Composable () -> Unit = { },
   predictionMenuItemContent: @Composable (AutocompletePrediction, SpanStyle?) -> Unit = { prediction, style ->
-    DefaultAutocompletePredictionText(prediction, style)
+      DefaultAutocompletePredictionText(prediction, style)
     }
 ) {
     val autocompleteResults = remember {
@@ -192,8 +193,16 @@ private fun DefaultAutocompletePredictionText(
   val secondaryText = prediction.getSecondaryText(predictionStyleSpan).toAnnotatedString(style)
 
   Column(Modifier.fillMaxWidth()) {
-    Text(primaryText, style = MaterialTheme.typography.bodyLarge)
-    Text(secondaryText, style = MaterialTheme.typography.bodyMedium)
+    Text(
+      primaryText, style = MaterialTheme.typography.bodyLarge,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+    )
+    Text(
+      secondaryText, style = MaterialTheme.typography.bodyMedium,
+      maxLines = 1,
+      overflow = TextOverflow.Ellipsis,
+    )
   }
 }
 
